@@ -22,15 +22,12 @@ public interface HttpExecutors
      * @param meta          重试机制元数据
      * @param <T>           返回值类型
      * @param restTemplate  restTemplate
-     * @param map           resetTemplate的超时时间相关配置
      * @return
      * @throws Exception
      */
-    <T> T executor(Task<T> task, Retryer retryer, Retryer.RetryMeta meta, RestTemplate restTemplate, Map map) throws Exception;
+    <T> T executor(Task<T> task, Retryer retryer, Retryer.RetryMeta meta, RestTemplate restTemplate) throws Exception;
 
     <T> T executor(Task<T> task, boolean needRetry, RestTemplate restTemplate)throws Exception;
 
-    <T> T executor(Task<T> task, boolean needRetry,Retryer.RetryMeta meta, RestTemplate restTemplate)throws Exception;
 
-    <T> T executor(Task<T> task, boolean needRetry,Retryer retryer, RestTemplate restTemplate)throws Exception;
 }

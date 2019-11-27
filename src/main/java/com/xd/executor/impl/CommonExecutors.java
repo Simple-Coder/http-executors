@@ -24,15 +24,8 @@ public class CommonExecutors implements HttpExecutors {
 
 
     @Override
-    public <T> T executor(Task<T> task, Retryer retryer, Retryer.RetryMeta meta, RestTemplate restTemplate, Map map) throws Exception {
+    public <T> T executor(Task<T> task, Retryer retryer, Retryer.RetryMeta meta, RestTemplate restTemplate) throws Exception {
         T result = null;
-
-        //
-        Router router = new DefaultRestTemplateRouter();
-        log.info("[HttpExecutors--设置RestTemplate的超时时间]");
-        router.setM2T(restTemplate,map);
-
-
         //new一个承载异常和正常返回值的容器
         RetryContainer container = new RetryContainer();
         long overallStartTime=System.currentTimeMillis();
@@ -86,8 +79,9 @@ public class CommonExecutors implements HttpExecutors {
     }
 
     @Override
-    public <T> T executor(Task<T> task, boolean needRetry, RestTemplate restTemplate) throws Exception {
+    public <T> T executor(Task<T> task, boolean needRetry, RestTemplate restTemplate) throws Exception
+    {
         //如果needRetry为true，使用默认的重试机制，以及默认的重试元数据（重试3次，间隔3秒）
-        return this.executor(task,needRetry?DEFAULT_RETRYER:null,needRetry?new Retryer.RetryMeta():Retryer.RetryMeta.NO_RETRY,restTemplate,null);
+        return this.executor(task,needRetry?DEFAULT_RETRYER:null,needRetry?new Retryer.RetryMeta():Retryer.RetryMeta.NO_RETRY,restTemplate);
     }
 }
