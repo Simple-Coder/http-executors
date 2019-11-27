@@ -84,4 +84,14 @@ public class CommonExecutors implements HttpExecutors {
         //如果needRetry为true，使用默认的重试机制，以及默认的重试元数据（重试3次，间隔3秒）
         return this.executor(task,needRetry?DEFAULT_RETRYER:null,needRetry?new Retryer.RetryMeta():Retryer.RetryMeta.NO_RETRY,restTemplate);
     }
+
+    @Override
+    public <T> T executor(Task<T> task,RestTemplate restTemplate, int retryCount, int intervalTime) throws Exception {
+        return this.executor(task,DEFAULT_RETRYER,new Retryer.RetryMeta(retryCount,intervalTime),restTemplate);
+    }
+
+    @Override
+    public <T> T executor(Task<T> task, RestTemplate restTemplate, Retryer retryer, int retryCount, int intervalTime) throws Exception {
+        return this.executor(task,retryer,new Retryer.RetryMeta(retryCount,intervalTime),restTemplate);
+    }
 }

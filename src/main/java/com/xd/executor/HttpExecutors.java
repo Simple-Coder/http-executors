@@ -29,5 +29,7 @@ public interface HttpExecutors
 
     <T> T executor(Task<T> task, boolean needRetry, RestTemplate restTemplate)throws Exception;
 
+    <T> T executor(Task<T> task, RestTemplate restTemplate,int retryCount,int intervalTime)throws Exception;
 
+    <T> T executor(Task<T> task, RestTemplate restTemplate,Retryer retryer,int retryCount,int intervalTime)throws Exception;
 }
