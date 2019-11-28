@@ -1,6 +1,7 @@
 package com.xd.executor.http.Impl;
 
 import com.xd.executor.http.beans.ClientMeta;
+import com.xd.executor.http.beans.RetryContainer;
 import com.xd.executor.http.client.builder.HCB;
 import com.xd.executor.http.inf.Retryer;
 import org.apache.http.client.HttpClient;
@@ -26,8 +27,8 @@ public class DefaultHttpClientRouter extends AbstractHttpClientRouter
     }
 
     @Override
-    public HttpClient choose(Retryer retryer, ClientMeta meta)
+    public HttpClient choose(RetryContainer container, ClientMeta meta)
     {
-        return null;
+        return HCB.custom().put4HttpClient(meta).setRetryer(container,meta.getRetryTimes()).build();
     }
 }

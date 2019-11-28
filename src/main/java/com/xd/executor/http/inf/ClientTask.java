@@ -1,5 +1,6 @@
 package com.xd.executor.http.inf;
 
+import com.xd.executor.http.client.exception.HttpProcessException;
 import org.apache.http.client.HttpClient;
 
 /**
@@ -10,5 +11,5 @@ import org.apache.http.client.HttpClient;
  */
 public interface ClientTask<T>
 {
-    <T> T execute(HttpClient httpClient);
+     T execute(HttpClient httpClient) throws HttpProcessException;
 }

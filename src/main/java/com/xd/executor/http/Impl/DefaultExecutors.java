@@ -2,6 +2,7 @@
 package com.xd.executor.http.Impl;
 
 import com.xd.executor.HttpExecutors;
+import com.xd.executor.http.beans.ClientMeta;
 import com.xd.executor.http.beans.RetryContainer;
 import com.xd.executor.http.enums.HCType;
 import com.xd.executor.http.inf.ClientTask;
@@ -106,27 +107,25 @@ public class DefaultExecutors implements HttpExecutors {
 
 
     @Override
-    public <T> T executor(ClientTask<T> clientTask, Retryer retryer, Retryer.RetryMeta meta, HCType hcType) throws Exception {
-        //先根据hcType选出需要用到的HttpClient
-//        HttpClient httpClient = (HttpClient)httpClientRouter.choose("");
+    public <T> T executor(ClientTask<T> clientTask, ClientMeta meta, Exception...exceptions) throws Exception {
         T result = null;
-        //new一个承载异常和正常返回值的容器RetryException
-        RetryContainer container = new RetryContainer();
+        log.info("[HttpExecutors--初始化RetryContainer容器]");
+        RetryContainer container = new RetryContainer(exceptions);
+        log.info("[HttpExecutors--初始化HttpClient......]");
+        HttpClient httpClient = (HttpClient)httpClientRouter.choose(container,meta);
 
-        long overallStartTime = System.currentTimeMillis();
-        log.info("[HttpExecutors--进入HttpExecutors-{},本次任务最大需要重试{}次]", overallStartTime, null == meta ? 0 : meta.getMaxRetryCount());
+        log.info("[HttpExecutors--进入HttpExecutors,本次任务最大需要重试{}次]", null == meta ? 0 : meta.getRetryTimes());
 
         long startTime = System.currentTimeMillis();
-        try {
-            log.info("[HttpExecutors--清空RetryContainer容器]");
-            container.clear();
+        try
+        {
             log.info("[HttpExecutors--开始执行任务]");
-//            result = clientTask.execute(httpClient);
+            result = clientTask.execute(httpClient);
             log.info("[HttpExecutors--任务执行完成]");
-            container.setResult(result);
-        } catch (Exception e) {
-            log.error("[HttpExecutors--退出--HTTP请求状态异常]-[总耗时：{}]", System.currentTimeMillis() - overallStartTime);
-//            throw container.getException();
+        } catch (Exception e)
+        {
+            log.error("[HttpExecutors--退出--HTTP请求状态异常]-[总耗时：【{}】],异常信息：【{}】", System.currentTimeMillis() - startTime,e.toString());
+            throw e;
         }
         return result;
     }

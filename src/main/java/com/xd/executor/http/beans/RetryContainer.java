@@ -1,5 +1,7 @@
 package com.xd.executor.http.beans;
 
+import org.springframework.web.client.ResourceAccessException;
+
 import java.util.Arrays;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Arrays;
 
 public class RetryContainer extends RuntimeException{
     private Object result;
-    private Exception[] exceptions=new Exception[]{};
+    private Exception[] exceptions;
 
     public Object getResult() {
         return result;
@@ -29,6 +31,18 @@ public class RetryContainer extends RuntimeException{
         this.exceptions=exceptions;
     }
 
+    public RetryContainer() {
+    }
+
+    public RetryContainer(Object result, Exception... exceptions)
+    {
+        this.result = result;
+        this.exceptions = exceptions;
+    }
+    public RetryContainer( Exception... exceptions)
+    {
+        this.exceptions = exceptions;
+    }
     //清空容器
     public void clear(){
         this.result = null;

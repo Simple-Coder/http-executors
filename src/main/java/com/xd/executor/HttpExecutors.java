@@ -1,5 +1,6 @@
 package com.xd.executor;
 
+import com.xd.executor.http.beans.ClientMeta;
 import com.xd.executor.http.enums.HCType;
 import com.xd.executor.http.inf.ClientTask;
 import com.xd.executor.http.inf.Retryer;
@@ -34,13 +35,13 @@ public interface HttpExecutors
 
     /**
      * httpclient
-     * @param retryer
+     * @param clientTask
      * @param meta
-     * @param hcType
+     * @param exceptions
      * @param <T>
      * @return
      * @throws Exception
      */
-    <T> T executor(ClientTask<T> clientTask, Retryer retryer, Retryer.RetryMeta meta, HCType hcType)throws Exception;
+    <T> T executor(ClientTask<T> clientTask, ClientMeta meta, Exception...exceptions)throws Exception;
 
 }

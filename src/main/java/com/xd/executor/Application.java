@@ -2,9 +2,11 @@ package com.xd.executor;
 
 import com.xd.executor.http.Impl.DefaultExecutors;
 import com.xd.executor.http.Impl.DefaultRetryer;
+import com.xd.executor.http.beans.ClientMeta;
 import com.xd.executor.http.beans.RetryContainer;
 import com.xd.executor.http.enums.ExceptionType;
 import com.xd.executor.http.inf.Retryer;
+import com.xd.executor.test.HttpClientTask;
 import com.xd.executor.test.RestTemplateRestTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,9 @@ public class Application {
 //        DefaultRestTemplateRouter defaultRestTemplateRouter = new DefaultRestTemplateRouter();
 //        defaultRestTemplateRouter.setM2T(restTemplate,new HashMap());
         try {
-            httpExecutors.executor(restTemplateTask,true,restTemplate);
+//            httpExecutors.executor(restTemplateTask,true,restTemplate);
+//            org.apache.http.conn.ConnectTimeoutException();
+            httpExecutors.executor(new HttpClientTask(),new ClientMeta(),new Exception());
         } catch (Exception e) {
             System.out.println("异常信息:" + e);
         }

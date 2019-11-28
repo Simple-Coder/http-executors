@@ -1,6 +1,7 @@
 package com.xd.executor.http.client.builder;
 
 import com.xd.executor.http.beans.ClientMeta;
+import com.xd.executor.http.beans.RetryContainer;
 import com.xd.executor.http.client.exception.HttpProcessException;
 import com.xd.executor.http.inf.Retryer;
 import org.apache.http.HttpEntityEnclosingRequest;
@@ -19,6 +20,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
@@ -34,6 +37,8 @@ import java.net.UnknownHostException;
  */
 public class HCB extends HttpClientBuilder
 {
+    private Logger log = LoggerFactory.getLogger(getClass());
+
     public boolean isSetPool=false;//记录是否设置了连接池
     private HCB(){}
     public static HCB custom()
@@ -148,16 +153,38 @@ public class HCB extends HttpClientBuilder
         return this;
     }
 
-    public HCB setRetryer(Retryer retryer,ClientMeta meta)
+    public HCB setRetryer(RetryContainer container,int retryTimes)
     {
-        if (meta==null){
+        if (container==null){
             return this;
         }
+        log.info("正在设置client的重试机制...");
         HttpRequestRetryHandler httpRequestRetryHandler = new HttpRequestRetryHandler()
         {
             @Override
-            public boolean retryRequest(IOException e, int executionCount, HttpContext httpContext) {
+            public boolean retryRequest(IOException e, int executionCount, HttpContext context) {
+                if (executionCount > retryTimes) {// 如果已经重试了n次，就放弃
+                    log.info("重试已达最大【{}】次",retryTimes);
+                    return false;
+                }
+                log.info("正在重试第【{}】次",executionCount);
+                for (Exception exception : container.getExceptions()) {
+                    log.info("正在验证当前异常：【{}】是否满足您设置的重试机制：【{}】",e.toString(),exception.toString());
 
+                    if (exception.getClass().isAssignableFrom( e.getClass())){
+                        log.info("当前异常：【{}】满足您设置的重试机制：【{}】",e.toString(),exception.toString());
+                        return true;
+                    }
+                }
+                log.info("当前异常：【{}】不满足您设置的重试机制：【{}】",e.toString());
+
+                HttpClientContext clientContext = HttpClientContext .adapt(context);
+                HttpRequest request = clientContext.getRequest();
+                // 如果请求是幂等的，就再次尝试
+                if (!(request instanceof HttpEntityEnclosingRequest)) {
+                    log.info("当前请求是幂等请求，正在重试：【{}】",e.toString());
+                    return true;
+                }
                 return false;
             }
         };
