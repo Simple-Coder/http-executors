@@ -1,5 +1,7 @@
 package com.xd.executor.http.beans;
 
+import java.util.Arrays;
+
 /**
  * @ClassName: RetryContainer
  * @Description: 承载异常和正常返回值的容器
@@ -9,7 +11,7 @@ package com.xd.executor.http.beans;
 
 public class RetryContainer extends RuntimeException{
     private Object result;
-    private Exception exception;
+    private Exception[] exceptions=new Exception[]{};
 
     public Object getResult() {
         return result;
@@ -19,16 +21,26 @@ public class RetryContainer extends RuntimeException{
         this.result = result;
     }
 
-    public Exception getException() {
-        return exception;
+    public Exception[] getExceptions() {
+        return exceptions;
     }
 
-    public void setException(Exception exception) {
-        this.exception = exception;
+    public void setExceptions(Exception...exceptions) throws Exception {
+        this.exceptions=exceptions;
     }
+
     //清空容器
     public void clear(){
         this.result = null;
-        this.exception = null;
+        this.exceptions = null;
     }
+
+    @Override
+    public String toString() {
+        return "RetryContainer{" +
+                "result=" + result +
+                ", exceptions=" + Arrays.toString(exceptions) +
+                '}';
+    }
+
 }

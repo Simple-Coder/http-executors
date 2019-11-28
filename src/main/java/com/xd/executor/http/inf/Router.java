@@ -6,7 +6,7 @@ package com.xd.executor.http.inf;
  * @Author: xiedong
  * @Date: 2019/11/26 14:52
  */
-public interface Router<T,K>
+public interface Router<T,R,M>
 {
-    T choose(K key);
+    T choose(R retryer,M meta);
 }

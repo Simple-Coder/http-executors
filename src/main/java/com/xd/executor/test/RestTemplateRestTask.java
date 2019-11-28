@@ -1,7 +1,6 @@
 package com.xd.executor.test;
 
-import com.xd.executor.inf.Task;
-import org.apache.http.client.HttpClient;
+import com.xd.executor.http.inf.RestTask;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -10,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
  * @Author: xiedong
  * @Date: 2019/11/26 18:32
  */
-public class RestTemplateTask implements Task<String> {
+public class RestTemplateRestTask implements RestTask<String> {
     @Override
     public String execute(RestTemplate restTemplate)
     {

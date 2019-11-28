@@ -1,4 +1,4 @@
-package com.xd.executor.http.rest.Impl;
+package com.xd.executor.http.Impl;
 
 import com.xd.executor.utils.ReflexObjectUtil;
 import org.slf4j.Logger;
@@ -15,14 +15,10 @@ import java.util.Map;
  * @Author: xiedong
  * @Date: 2019/11/26 15:05
  */
-public class DefaultRestTemplateRouter extends RestTemplateRouter {
+public class DefaultRestTemplateRouter extends AbstractRestTemplateRouter {
 //    private static Logger log = Logger.getLogger(DefaultRestTemplateRouter.class);
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public RestTemplate choose(String key) {
-        return null;
-    }
 
     public RestTemplate setM2T(RestTemplate restTemplate, Map map)
     {

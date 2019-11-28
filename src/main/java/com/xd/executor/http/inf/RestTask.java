@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
  * @Author: xiedong
  * @Date: 2019/11/26 14:49
  */
-public interface Task<T>
+public interface RestTask<T>
 {
     T execute(RestTemplate restTemplate);
 }
