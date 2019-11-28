@@ -47,7 +47,10 @@ public class HCB extends HttpClientBuilder
     }
     public HCB put4HttpClient(ClientMeta meta)
     {
-        return this.timeout(meta.getConnectTimeout(),meta.getSocketTimeout(),meta.getConnectTimeout())
+        log.info("HttpClient连接超时时间：【{}】,获取连接超时时间：【{}】,读取超时时间设置:【{}】,连接池最大数:【{}】,最大创建连接数：【{}】,代理IP：【{}】,代理端口：【{}】"
+                ,meta.getConnectTimeout(),meta.getConnectRequestTimeout(),meta.getSocketTimeout(),meta.getMatTotal(),meta.getDefaultMaxPerRoute(),
+                meta.getProxyIP()==null?"无":meta.getProxyIP(),meta.getPort()==0?"无":meta.getPort());
+        return this.timeout(meta.getConnectTimeout(),meta.getSocketTimeout(),meta.getConnectRequestTimeout())
                 .pool(meta.getMatTotal(),meta.getDefaultMaxPerRoute())
                 .proxy(meta.getProxyIP(),meta.getPort());
     }

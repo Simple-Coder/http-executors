@@ -1,10 +1,9 @@
 
-package com.xd.executor.http.Impl;
+package com.xd.executor.http.service.Impl;
 
 import com.xd.executor.HttpExecutors;
 import com.xd.executor.http.beans.ClientMeta;
 import com.xd.executor.http.beans.RetryContainer;
-import com.xd.executor.http.enums.HCType;
 import com.xd.executor.http.inf.ClientTask;
 import com.xd.executor.http.inf.Retryer;
 import com.xd.executor.http.inf.Router;
@@ -33,6 +32,9 @@ public class DefaultExecutors implements HttpExecutors {
     private Router restTemplateRouter = new DefaultRestTemplateRouter();
     //HttpClient路由器
     private Router httpClientRouter = new DefaultHttpClientRouter();
+
+    //
+    private static final Exception[] defaultExceptions = new Exception[]{new Exception()};
 
     @Override
     public <T> T executor(RestTask<T> restTask, Retryer retryer, Retryer.RetryMeta meta, RestTemplate restTemplate) throws Exception {
@@ -110,7 +112,15 @@ public class DefaultExecutors implements HttpExecutors {
     public <T> T executor(ClientTask<T> clientTask, ClientMeta meta, Exception...exceptions) throws Exception {
         T result = null;
         log.info("[HttpExecutors--初始化RetryContainer容器]");
+        if (exceptions==null)
+        {
+           log.info("未指定异常重试，默认异常重试机制");
+            exceptions=defaultExceptions;
+        }else {
+            log.info("已使用您设定的异常重试机制");
+        }
         RetryContainer container = new RetryContainer(exceptions);
+
         log.info("[HttpExecutors--初始化HttpClient......]");
         HttpClient httpClient = (HttpClient)httpClientRouter.choose(container,meta);
 
@@ -128,6 +138,16 @@ public class DefaultExecutors implements HttpExecutors {
             throw e;
         }
         return result;
+    }
+
+    @Override
+    public <T> T executor(ClientTask<T> clientTask, int connectTimeout, int socketTimeout,int retryTimes, Exception... exceptions) throws Exception {
+        return this.executor(clientTask,new ClientMeta(connectTimeout,socketTimeout,100,10,retryTimes),exceptions);
+    }
+
+    @Override
+    public <T> T executor(ClientTask<T> clientTask) throws Exception {
+        return this.executor(clientTask,new ClientMeta());
     }
 }
 

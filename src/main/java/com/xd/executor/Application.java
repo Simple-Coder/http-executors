@@ -1,10 +1,8 @@
 package com.xd.executor;
 
-import com.xd.executor.http.Impl.DefaultExecutors;
-import com.xd.executor.http.Impl.DefaultRetryer;
+import com.xd.executor.http.service.Impl.DefaultExecutors;
+import com.xd.executor.http.service.Impl.DefaultRetryer;
 import com.xd.executor.http.beans.ClientMeta;
-import com.xd.executor.http.beans.RetryContainer;
-import com.xd.executor.http.enums.ExceptionType;
 import com.xd.executor.http.inf.Retryer;
 import com.xd.executor.test.HttpClientTask;
 import com.xd.executor.test.RestTemplateRestTask;

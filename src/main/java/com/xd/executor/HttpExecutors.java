@@ -44,4 +44,7 @@ public interface HttpExecutors
      */
     <T> T executor(ClientTask<T> clientTask, ClientMeta meta, Exception...exceptions)throws Exception;
 
+    <T> T executor(ClientTask<T> clientTask, int connectTimeout,int socketTimeout,int retryTimes, Exception...exceptions)throws Exception;
+
+    <T> T executor(ClientTask<T> clientTask)throws Exception;
 }

@@ -20,6 +20,7 @@ public class ClientMeta
     public ClientMeta() {
         this.connectTimeout = 1000;
         this.socketTimeout = 1000;
+        this.connectRequestTimeout=1000;
         this.matTotal = 100;
         this.defaultMaxPerRoute = 10;
         this.retryTimes = 3;
