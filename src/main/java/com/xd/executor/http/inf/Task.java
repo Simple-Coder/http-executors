@@ -1,6 +1,5 @@
-package com.xd.executor.inf;
+package com.xd.executor.http.inf;
 
-import org.apache.http.client.HttpClient;
 import org.springframework.web.client.RestTemplate;
 
 /**

@@ -1,10 +1,9 @@
-package com.xd.executor.impl;
+package com.xd.executor.http.rest.Impl;
 
 import com.xd.executor.utils.ReflexObjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,7 +18,12 @@ import java.util.Map;
 public class DefaultRestTemplateRouter extends RestTemplateRouter {
 //    private static Logger log = Logger.getLogger(DefaultRestTemplateRouter.class);
     private Logger log = LoggerFactory.getLogger(getClass());
+
     @Override
+    public RestTemplate choose(String key) {
+        return null;
+    }
+
     public RestTemplate setM2T(RestTemplate restTemplate, Map map)
     {
         HttpComponentsClientHttpRequestFactory requestFactory = (HttpComponentsClientHttpRequestFactory)restTemplate.getRequestFactory();

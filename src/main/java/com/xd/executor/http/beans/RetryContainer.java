@@ -1,4 +1,4 @@
-package com.xd.executor.beans;
+package com.xd.executor.http.beans;
 
 /**
  * @ClassName: RetryContainer

@@ -1,14 +1,12 @@
-package com.xd.executor.impl;
+package com.xd.executor.http.rest.Impl;
 
 import com.xd.executor.HttpExecutors;
-import com.xd.executor.beans.RetryContainer;
-import com.xd.executor.inf.Retryer;
-import com.xd.executor.inf.Router;
-import com.xd.executor.inf.Task;
+import com.xd.executor.http.beans.RetryContainer;
+import com.xd.executor.http.inf.Retryer;
+import com.xd.executor.http.inf.Task;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
-import java.util.Map;
 
 /**
  * @ClassName: CommonExecutors
@@ -16,11 +14,11 @@ import java.util.Map;
  * @Author: xiedong
  * @Date: 2019/11/26 16:05
  */
-public class CommonExecutors implements HttpExecutors {
+public class DefaultRestExecutors implements HttpExecutors {
 
     //默认重试机制
     private Logger log = LoggerFactory.getLogger(getClass());
-    private static final CommonRetryer DEFAULT_RETRYER = new CommonRetryer();
+    private static final DefaultRestRetryer DEFAULT_RETRYER = new DefaultRestRetryer();
 
 
     @Override

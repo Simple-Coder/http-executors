@@ -1,6 +1,6 @@
-package com.xd.executor.inf;
+package com.xd.executor.http.inf;
 
-import com.xd.executor.beans.RetryContainer;
+import com.xd.executor.http.beans.RetryContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
