@@ -57,6 +57,7 @@ public class HCB extends HttpClientBuilder
     /**
      * 设置超时时间
      */
+    @Deprecated
     private HCB timeout(int connectTimeout,int SocketTimeout,int connectRequestTimeout)
     {
         //配置请求的超时设置
@@ -83,13 +84,6 @@ public class HCB extends HttpClientBuilder
         isSetPool=true;
         return (HCB) this.setConnectionManager(connManager);
     }
-    /**
-     * 设置代理
-     *
-     * @param hostOrIP		代理host或者ip
-     * @param port			代理端口
-     * @return	返回当前对象
-     */
     private HCB proxy(String hostOrIP, int port){
         if (hostOrIP!=null&&!"".equals(hostOrIP))
         {
@@ -100,62 +94,6 @@ public class HCB extends HttpClientBuilder
         }
         return this;
     }
-    /**
-     * 重试（如果请求是幂等的，就再次尝试）
-     *
-     * @param tryTimes		重试次数
-     * @return	返回当前对象
-     */
-    public HCB retry(final int tryTimes){
-        return retry(tryTimes, false);
-    }
-    /**
-     * 重试（如果请求是幂等的，就再次尝试）
-     *
-     * @param tryTimes						重试次数
-     * @param retryWhenInterruptedIO		连接拒绝时，是否重试
-     * @return	返回当前对象
-     */
-    public HCB retry(final int tryTimes, final boolean retryWhenInterruptedIO){
-        // 请求重试处理
-        HttpRequestRetryHandler httpRequestRetryHandler = new HttpRequestRetryHandler() {
-            public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
-                if (executionCount >= tryTimes) {// 如果已经重试了n次，就放弃
-                    return false;
-                }
-                if (exception instanceof NoHttpResponseException) {// 如果服务器丢掉了连接，那么就重试
-                    return true;
-                }
-                if (exception instanceof SSLHandshakeException) {// 不要重试SSL握手异常
-                    return false;
-                }
-                if (exception instanceof InterruptedIOException) {// 超时
-                    //return false;
-                    return retryWhenInterruptedIO;
-                }
-                if (exception instanceof UnknownHostException) {// 目标服务器不可达
-                    return true;
-                }
-                if (exception instanceof ConnectTimeoutException) {// 连接被拒绝
-                    return false;
-                }
-                if (exception instanceof SSLException) {// SSL握手异常
-                    return false;
-                }
-
-                HttpClientContext clientContext = HttpClientContext .adapt(context);
-                HttpRequest request = clientContext.getRequest();
-                // 如果请求是幂等的，就再次尝试
-                if (!(request instanceof HttpEntityEnclosingRequest)) {
-                    return true;
-                }
-                return false;
-            }
-        };
-        this.setRetryHandler(httpRequestRetryHandler);
-        return this;
-    }
-
     public HCB setRetryer(RetryContainer container,int retryTimes)
     {
         if (container==null){
@@ -192,6 +130,7 @@ public class HCB extends HttpClientBuilder
             }
         };
         this.setRetryHandler(httpRequestRetryHandler);
+        log.info("已完成设置client重试机制");
         return this;
     }
 }

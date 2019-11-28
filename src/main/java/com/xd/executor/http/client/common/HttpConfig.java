@@ -55,6 +55,10 @@ public class HttpConfig {
      * 以json格式作为输入参数
      */
     private String json;
+    /**
+     * 以字符串作为输入参数
+     */
+    private String str;
 
     /**
      * 输入输出编码
@@ -177,6 +181,13 @@ public class HttpConfig {
         this.json = json;
         Map<String, Object> map = new HashMap<String, Object>();
         map.put(Utils.ENTITY_JSON, json);
+        maps.set(map);
+        return this;
+    }
+    public HttpConfig reqStr(String str) {
+        this.str = str;
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put(Utils.ENTITY_STRING, str);
         maps.set(map);
         return this;
     }

@@ -112,7 +112,7 @@ public class DefaultExecutors implements HttpExecutors {
     public <T> T executor(ClientTask<T> clientTask, ClientMeta meta, Exception...exceptions) throws Exception {
         T result = null;
         log.info("[HttpExecutors--初始化RetryContainer容器]");
-        if (exceptions==null)
+        if (exceptions==null||exceptions.length==0)
         {
            log.info("未指定异常重试，默认异常重试机制");
             exceptions=defaultExceptions;
