@@ -27,7 +27,7 @@ public class RetryContainer extends RuntimeException{
         return exceptions;
     }
 
-    public void setExceptions(Exception...exceptions) throws Exception {
+    public void setExceptions(Exception...exceptions) {
         this.exceptions=exceptions;
     }
 

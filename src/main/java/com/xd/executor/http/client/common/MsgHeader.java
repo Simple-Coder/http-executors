@@ -9,4 +9,7 @@ package com.xd.executor.http.client.common;
 public class MsgHeader {
     public static final String xmlUTF8Header="<?xml version=\"1.0\" encoding=\"UTF-8\"?> ";
     public static final String xmlGBKHeader="<?xml version=\"1.0\" encoding=\"GBK\"?> ";
+
+    public static final String xmlUTF8Header1="<?xml version=\"1.0\" encoding=";
+    public static final String xmlGBKHeader1="<?xml version=\"1.0\" encoding=";
 }

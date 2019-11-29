@@ -1,5 +1,6 @@
 package com.xd.executor;
 
+import com.xd.executor.http.client.common.HttpHeader;
 import com.xd.executor.http.client.common.HttpMethods;
 import com.xd.executor.http.service.HttpClientFactory;
 import com.xd.executor.http.service.HttpClientTemplate;
@@ -50,7 +51,10 @@ public class Application {
 //            httpExecutors.executor(new HttpClientTask());
 //            HttpClientFactory.newInstance().get("a");
 //            s = new HttpClientTemplate().doExecute("application/xml", url, HttpMethods.POST, fathor);
-            s = new HttpClientTemplate().doExecute("application/json", url, HttpMethods.POST, fathor);
+//            Fathor s1 = new HttpClientTemplate().doExecute("application/json", url, HttpMethods.POST, fathor, Fathor.class);
+//            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/xml").build(), url, HttpMethods.POST, fathor, Fathor.class);
+            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+            System.out.println("返回的内容："+s1);
         } catch (Exception e) {
             System.out.println("异常信息:" + e);
         }

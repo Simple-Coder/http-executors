@@ -35,12 +35,12 @@ public class XStreamUtil {
      * @param <T>
      * @return
      */
-    public static <T> T xml2Bean(String xmlStr,Class reClass){
+    public static <T> T xml2Bean(String xmlStr,Class reClass) throws Exception {
         try {
             XStream stream = XStreamFactory.getInstance().getStream(reClass);
             return (T) stream.fromXML(xmlStr);
         } catch (Exception e) {
-           return null;
+            throw new Exception(xmlStr+">>>类型转换错误>>>"+reClass);
         }
     }
 }

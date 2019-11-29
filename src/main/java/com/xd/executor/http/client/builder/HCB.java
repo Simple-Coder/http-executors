@@ -38,6 +38,8 @@ import java.net.UnknownHostException;
 public class HCB extends HttpClientBuilder
 {
     private Logger log = LoggerFactory.getLogger(getClass());
+    //
+    private static final Exception[] defaultExceptions = new Exception[]{new Exception()};
 
     public boolean isSetPool=false;//记录是否设置了连接池
     private HCB(){}
@@ -99,7 +101,11 @@ public class HCB extends HttpClientBuilder
         if (container==null){
             return this;
         }
-        log.info("正在设置client的重试机制...");
+        if (container.getExceptions()==null||container.getExceptions().length==0){
+            log.info("您未设置重试机制，默认所有异常重试");
+            container.setExceptions(defaultExceptions);
+        }
+        log.info("正在设置client的重试机制,重试次数:【{}】...",retryTimes);
         HttpRequestRetryHandler httpRequestRetryHandler = new HttpRequestRetryHandler()
         {
             @Override
