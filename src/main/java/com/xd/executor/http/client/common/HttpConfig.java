@@ -59,7 +59,10 @@ public class HttpConfig {
      * 以字符串作为输入参数
      */
     private String str;
-
+    /**
+     * 以对象作为输入参数
+     */
+    private Object params;
     /**
      * 输入输出编码
      */
@@ -191,6 +194,10 @@ public class HttpConfig {
         maps.set(map);
         return this;
     }
+    public HttpConfig obj(Object params) {
+        this.params = params;
+        return this;
+    }
     /**
      * @param encoding	输入输出编码
      * @return	返回当前对象
@@ -310,5 +317,8 @@ public class HttpConfig {
 
     public RequestConfig requestConfig() {
         return requestConfig;
+    }
+    public Object obj(){
+        return params;
     }
 }

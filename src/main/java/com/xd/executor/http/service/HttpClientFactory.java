@@ -101,7 +101,7 @@ public class HttpClientFactory {
     public HttpConfig getHttpConfigConverter(String contentType, String url, HttpMethods method, Object obj, HttpClient client, String charset) throws JsonProcessingException {
         HttpConfig cfg = HttpConfig.custom()
                 .url(url)
-                .encoding("utf-8")
+                .encoding(charset)
                 .client(client)
                 .method(method)
                 .headers(HttpHeader.custom().contentType(contentType).build());
@@ -109,11 +109,10 @@ public class HttpClientFactory {
         String xmlHeader = "";
         String reqStr = "";
         if (HttpHeader.Headers.APPLICATION_XML.equals(contentType)) {
-            if (charset == null || charset.equals("")) {
-                charset = "utf-8";
-                xmlHeader = MsgHeader.xmlUTF8Header;
+            if (charset != null &&charset.equals("utf-8")) {
+                xmlHeader = MsgHeader.xmlUTF8Header1+"\""+charset+"\"?>";;
             } else {
-                xmlHeader = MsgHeader.xmlGBKHeader;
+                xmlHeader = MsgHeader.xmlGBKHeader1+"\""+charset+"\"?>";
             }
             reqStr = xmlHeader.concat(XStreamUtil.bean2Xml(obj));
             cfg.reqStr(reqStr);
@@ -129,7 +128,7 @@ public class HttpClientFactory {
     public HttpConfig getHttpConfigConverter(Header[] headers, String url, HttpMethods method, Object obj, HttpClient client, String charset)  {
         HttpConfig cfg = HttpConfig.custom()
                 .url(url)
-                .encoding("utf-8")
+                .encoding(charset)
                 .client(client)
                 .method(method)
                 .headers(headers);

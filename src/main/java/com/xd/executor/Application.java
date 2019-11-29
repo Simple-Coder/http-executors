@@ -1,5 +1,6 @@
 package com.xd.executor;
 
+import com.xd.executor.http.client.common.HttpConfig;
 import com.xd.executor.http.client.common.HttpHeader;
 import com.xd.executor.http.client.common.HttpMethods;
 import com.xd.executor.http.inf.Retryer;
@@ -53,7 +54,14 @@ public class Application {
 //            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/xml").build(), url, HttpMethods.POST, fathor, Fathor.class);
 //            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
 //            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2,new ResourceAccessException("超时异常")).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
-            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2,new ConnectException()).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+//            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2,new ConnectException()).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+            HttpConfig cfg = HttpConfig.custom().headers(HttpHeader.custom().contentType("application/json").build())
+                    .method(HttpMethods.POST)
+                    .url(url)
+                    .obj(fathor)
+                    .encoding("utf-8");
+            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2,new ConnectException())
+                    .doExecute(cfg, Fathor.class);
 
             System.out.println("返回的内容："+s1);
         } catch (Exception e) {

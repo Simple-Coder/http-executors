@@ -74,6 +74,23 @@ public class HttpClientTemplate
         }
     }
 
+    public <T> T doExecute(HttpConfig config,Class<T> responseType){
+        Assert.notNull(config, "config is required");
+        HttpConfig cfg;
+        String contentType = this.getValueFromHeader(config.headers(), "Content-Type");
+        try
+        {
+            cfg = factory.getHttpConfigConverter(contentType, config.url(), config.method(), config.obj(), httpClient, config.encoding());
+            return this.convert(contentType,responseType,HttpClientUtil.send(cfg));
+        } catch (Exception e)
+        {
+            log.info("http执行异常:【{}】",e.toString());
+            return null;
+        }
+    }
+
+
+
     public <T> T doExecute(String contentType, String url, HttpMethods method, Object param, Class<T> responseType){
         Assert.notNull(contentType, "contentType is required");
         Assert.notNull(url, "URI is required");
@@ -83,7 +100,7 @@ public class HttpClientTemplate
             return this.convert(contentType,responseType,HttpClientUtil.send(cfg));
         } catch (Exception e)
         {
-            log.info("execute exception info:【{}】",e.toString());
+            log.info("http执行异常:【{}】",e.toString());
             return null;
         }
     }
@@ -98,18 +115,19 @@ public class HttpClientTemplate
           }
     }
     private <T> T convert(Header[] headers,Class<T> responseType,String resData) throws Exception {
-        String contentType=null;
         Assert.notNull(headers, "Headers is required");
+        return this.convert(this.getValueFromHeader(headers, "Content-Type"),responseType,resData);
+    }
 
+    private String getValueFromHeader(Header[] headers,String key){
+        Assert.notNull(headers, "Headers is required");
         for (Header header : headers) {
             String name = header.getName();
             String value = header.getValue();
-            if ("Content-Type".equals(name)){
-                contentType=value;
-                break;
+            if (name.equals(key)){
+                return value;
             }
         }
-        return this.convert(contentType,responseType,resData);
-
+        return null;
     }
 }
