@@ -105,7 +105,7 @@ public class HCB extends HttpClientBuilder
             log.info("您未设置重试机制，默认所有异常重试");
             container.setExceptions(defaultExceptions);
         }
-        log.info("正在设置client的重试机制,重试次数:【{}】...",retryTimes);
+        log.info("正在设置client的重试机制,重试次数:【{}】,异常重试如下：\r\n【{}】",retryTimes,container.getExceptions());
         HttpRequestRetryHandler httpRequestRetryHandler = new HttpRequestRetryHandler()
         {
             @Override

@@ -69,7 +69,7 @@ public class HttpClientTemplate
             return this.convert(headers,responseType,HttpClientUtil.send(cfg));
         } catch (Exception e)
         {
-            log.info("execute exception info:【{}】",e.toString());
+            log.info("http执行异常:【{}】",e.toString());
             return null;
         }
     }

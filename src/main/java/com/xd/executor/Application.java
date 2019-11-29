@@ -2,18 +2,16 @@ package com.xd.executor;
 
 import com.xd.executor.http.client.common.HttpHeader;
 import com.xd.executor.http.client.common.HttpMethods;
-import com.xd.executor.http.service.HttpClientFactory;
+import com.xd.executor.http.inf.Retryer;
 import com.xd.executor.http.service.HttpClientTemplate;
 import com.xd.executor.http.service.Impl.DefaultExecutors;
 import com.xd.executor.http.service.Impl.DefaultRetryer;
-import com.xd.executor.http.beans.ClientMeta;
-import com.xd.executor.http.inf.Retryer;
-import com.xd.executor.test.HttpClientTask;
 import com.xd.executor.test.RestTemplateRestTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +51,10 @@ public class Application {
 //            s = new HttpClientTemplate().doExecute("application/xml", url, HttpMethods.POST, fathor);
 //            Fathor s1 = new HttpClientTemplate().doExecute("application/json", url, HttpMethods.POST, fathor, Fathor.class);
 //            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/xml").build(), url, HttpMethods.POST, fathor, Fathor.class);
-            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+//            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+//            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2,new ResourceAccessException("超时异常")).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+            Fathor s1 = new HttpClientTemplate(60000,60000,60000,100,10,2,new ConnectException()).doExecute(HttpHeader.custom().contentType("application/json").build(), url, HttpMethods.POST, fathor, Fathor.class);
+
             System.out.println("返回的内容："+s1);
         } catch (Exception e) {
             System.out.println("异常信息:" + e);
